@@ -15,7 +15,7 @@ private:
 
 	LevelManager m_LevelManager;
 
-	const int TILE_SIZE = 64;
+	const int TILE_SIZE = 50;
 	const int VERTS_IN_QUAD = 4;
 	const int GRAVITY = 300;
 

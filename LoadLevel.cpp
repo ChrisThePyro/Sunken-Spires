@@ -6,14 +6,15 @@ using namespace sf;
 void Engine::loadLevel()
 {
 
-	m_Playing = false;
-
-	// Delete the previously allocated memory.
-	for (int i = 0; i < m_LevelManager.GetLevelSize().y; i++)
+	if (m_ArrayLevel != nullptr)
 	{
-		delete[] m_ArrayLevel[i];
+		// Delete the previously allocated memory.
+		for (int i = 0; i < m_LevelManager.GetLevelSize().y; i++)
+		{
+			delete[] m_ArrayLevel[i];
+		}
+		delete[] m_ArrayLevel;
 	}
-	delete[] m_ArrayLevel;
 
 	// Load the next 2D array with the map for the level and repopulate the vertex array as well.
 	m_ArrayLevel = m_LevelManager.NextLevel(m_VALevel);
