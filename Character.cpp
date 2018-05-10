@@ -8,9 +8,8 @@ Character::Character()
 {
 
 	// Associate a texture with a sprite.
-	m_Sprite = Sprite(TextureHolder::GetTexture("graphics/thomas.png"));
-
-	m_JumpDuration = 0.45f;
+	m_Sprite = Sprite(TextureHolder::GetTexture("graphics/Character_Right.png"));
+	m_JumpDuration = 0.25f;
 
 } // End function character().
 

@@ -4,10 +4,10 @@
 void Engine::draw()
 {
 	// Erase the last frame.
-	m_RenderWindow.clear(sf::Color::White);
+	m_RenderWindow.clear(sf::Color::Blue);
 
 	// Switch to the background view
-	m_RenderWindow.setView(m_BGMainView);
+	m_RenderWindow.setView(m_MainView);
 
 	// Draw the background.
 	m_RenderWindow.draw(m_BackgroundSprite);
@@ -21,10 +21,15 @@ void Engine::draw()
 	// Draw Thomas and Bob.
 	m_RenderWindow.draw(m_Character.getSprite());
 
-	// Draw HUD.
-	// Switch to HUD view.
+	// Draw the HUD
 	m_RenderWindow.setView(m_HudView);
-	// TODO: Draw HUD.
+	m_RenderWindow.draw(m_Hud.getLevel());
+	m_RenderWindow.draw(m_Hud.getTime());
+
+	if (!m_Playing)
+	{
+		m_RenderWindow.draw(m_Hud.getMessage());
+	}
 
 	// Show everything we have just drawn.
 	m_RenderWindow.display();

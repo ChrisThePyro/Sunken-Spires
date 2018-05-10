@@ -12,7 +12,7 @@ Engine::Engine()
 
 	m_RenderWindow.create(VideoMode(resolution.x, resolution.y), "Sunken Spires", Style::Titlebar);
 
-	m_MainView.setSize(resolution);
+	m_MainView.setSize(resolution.x/2, resolution.y/2);
 	m_HudView.reset(FloatRect(0, 0, resolution.x, resolution.y));
 
 	m_BackgroundTexture = TextureHolder::GetTexture("graphics/background.png");

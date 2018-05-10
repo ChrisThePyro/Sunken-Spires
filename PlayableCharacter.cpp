@@ -133,4 +133,3 @@ void PlayableCharacter::stopJump()
 	m_IsJumping = false;
 	m_IsFalling = true;
 }
-

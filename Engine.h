@@ -3,6 +3,8 @@
 #include "LevelManager.h"
 #include "TextureHolder.h"
 #include "Character.h"
+#include "SoundManager.h"
+#include "HUD.h"
 
 class Engine
 {
@@ -14,6 +16,11 @@ private:
 	Character m_Character;
 
 	LevelManager m_LevelManager;
+	SoundManager m_SoundManager;
+
+	Hud m_Hud;
+	int m_FramesSinceLastHUDUpdate = 0;
+	int m_TargetFramesPerHUDUpdate = 500;
 
 	const int TILE_SIZE = 50;
 	const int VERTS_IN_QUAD = 4;

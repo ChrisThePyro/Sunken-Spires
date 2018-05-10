@@ -28,14 +28,14 @@ int** LevelManager::NextLevel(VertexArray& rVaLevel)
 	case 1:
 		LevelToLoad = "levels/level1.txt";
 		m_StartPosition.x = 100;
-		m_StartPosition.y = 100;
-		m_BaseTimeLimit = 30.0f;
+		m_StartPosition.y = 380;
+		m_BaseTimeLimit = 100.0f;
 		break;
 
 	case 2:
 		LevelToLoad = "levels/level2.txt";
 		m_StartPosition.x = 100;
-		m_StartPosition.y = 3600;
+		m_StartPosition.y = 380;
 		m_BaseTimeLimit = 100.0f;
 		break;
 

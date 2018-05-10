@@ -23,8 +23,10 @@ void Engine::input()
 			}
 		}
 
-		if (m_Character.handleInput())
-		{
-		}
+	}
+
+	if (m_Character.handleInput())
+	{
+		m_SoundManager.playJump();
 	}
 }

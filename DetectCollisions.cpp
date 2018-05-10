@@ -20,9 +20,9 @@ bool Engine::detectCollisions(PlayableCharacter& character)
 
 	// Build a zone around the Character to detect collision.
 	int startX = (int)(detectionZone.left / TILE_SIZE) - 1;
-	int startY = (int)(detectionZone.top / TILE_SIZE) - 1;
+	int startY = (int)(detectionZone.top / TILE_SIZE);
 	int endX = (int)(detectionZone.left / TILE_SIZE) + 2;
-	int endY = (int)(detectionZone.top / TILE_SIZE) + 3; // Tgomas is quite tall.
+	int endY = (int)(detectionZone.top / TILE_SIZE) + 3;
 
 														 // Make sure we don't test positions lower than zero.
 	if (startX < 0) startX = 0;
@@ -50,7 +50,7 @@ bool Engine::detectCollisions(PlayableCharacter& character)
 			block.top = y * TILE_SIZE;
 
 			  // Is Character collding with a regular block?
-			if (m_ArrayLevel[y][x] == 1)
+			if (m_ArrayLevel[y][x] == 1 || m_ArrayLevel[y][x] == 3)
 			{
 				if (character.getRight().intersects(block))
 				{
@@ -71,11 +71,35 @@ bool Engine::detectCollisions(PlayableCharacter& character)
 				}
 			} // end normal block test.
 
+			if (m_ArrayLevel[y][x] == 5 || m_ArrayLevel[y][x] == 6)
+			{
+				if (character.getFeet().intersects(block))
+				{
+					character.stopFalling(block.top);
+				}
+			}
+
+			if (m_ArrayLevel[y][x] == 2)
+			{
+				if (character.getHead().intersects(block))
+				{
+					// The are in the water / lava.
+					character.spawn(m_LevelManager.getStartPosition(), GRAVITY);
+
+					// Play a sound based on water or lava death.
+					if (m_ArrayLevel[y][x] == 4) // Fire.
+					{
+						m_SoundManager.playFallInWater();
+					}
+				}// End block collision test with fire / water.
+			} // End water / lava test.
+
 			  // Have we reached the goal?
 			if (m_ArrayLevel[y][x] == 4)
 			{
 				// Character has reached the goal.
 				reachedGoal = true;
+				m_SoundManager.playReachGoal();
 			}
 
 			// More collisions here once we have learned about particle effects.
