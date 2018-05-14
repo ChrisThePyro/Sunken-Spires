@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "Engine.h"
+#include "PlayableCharacter.h"
+#include "LevelManager.h"
 #include <iostream>
 
 using namespace sf;
@@ -24,7 +26,7 @@ bool Engine::detectCollisions(PlayableCharacter& character)
 	int endX = (int)(detectionZone.left / TILE_SIZE) + 2;
 	int endY = (int)(detectionZone.top / TILE_SIZE) + 3;
 
-														 // Make sure we don't test positions lower than zero.
+	// Make sure we don't test positions lower than zero.
 	if (startX < 0) startX = 0;
 	if (startY < 0) startY = 0;
 
@@ -83,23 +85,97 @@ bool Engine::detectCollisions(PlayableCharacter& character)
 			{
 				if (character.getHead().intersects(block))
 				{
-					// The are in the water / lava.
-					character.spawn(m_LevelManager.getStartPosition(), GRAVITY);
+					// The are in the water
+					character.respawn(m_LevelManager.getStartPosition(), GRAVITY);
+					m_SoundManager.playFallInWater();
+					character.m_Lives -= 1;
+				}
+			} // End water
 
-					// Play a sound based on water or lava death.
-					if (m_ArrayLevel[y][x] == 4) // Fire.
+
+			// Spikey thing
+			if (m_ArrayLevel[y][x] == 8)
+			{
+				// Check if this block is in our immune list
+				sf::Vector2i blockCoords;
+				blockCoords.y = y;
+				blockCoords.x = x;
+
+				bool inImmuneList = false;
+				auto itImmune = character.m_ImmuneBlocks.begin();
+				for (; itImmune != character.m_ImmuneBlocks.end(); ++itImmune)
+				{
+					if (blockCoords == *itImmune)
 					{
-						m_SoundManager.playFallInWater();
+						inImmuneList = true;
+						break;
 					}
-				}// End block collision test with fire / water.
-			} // End water / lava test.
+				}
+
+				// Test collisions & act on any we encounter
+				bool collidedWithBlock = false;
+
+				if (character.getRight().intersects(block))
+				{
+					if (!inImmuneList)
+					{
+						character.m_Health = (character.m_Health - 10);
+						character.m_Position.x -= 75;
+						m_SoundManager.PlayOuch();
+					}
+					collidedWithBlock = true;
+				}
+				else if (character.getLeft().intersects(block))
+				{
+					if (!inImmuneList)
+					{
+						character.m_Health = (character.m_Health - 10);
+						character.m_Position.x += 75;
+						m_SoundManager.PlayOuch();
+					}
+					collidedWithBlock = true;
+				}
+				else if (character.getFeet().intersects(block))
+				{
+					if (!inImmuneList)
+					{
+						character.m_Health = (character.m_Health - 10);
+						character.m_Position.x -= 75;
+						character.m_Position.y -= 75;
+						m_SoundManager.PlayOuch();
+					}
+					collidedWithBlock = true;
+				}
+
+				// Add or remove from list
+				if (inImmuneList && !collidedWithBlock)
+				{
+					// Remove from list
+					character.m_ImmuneBlocks.erase(itImmune);
+				}
+				else if (!inImmuneList && collidedWithBlock)
+				{
+					// Add to list
+					character.m_ImmuneBlocks.push_back(blockCoords);
+				}
+			}
 
 			  // Have we reached the goal?
-			if (m_ArrayLevel[y][x] == 4)
+			if (m_ArrayLevel[y][x] == 4 && character.m_Win == false)
 			{
 				// Character has reached the goal.
-				reachedGoal = true;
-				m_SoundManager.playReachGoal();
+				if (m_LevelManager.GetCurrentLevel() != 3)
+				{
+					reachedGoal = true;
+					m_SoundManager.playReachGoal();
+				}
+
+				if (m_LevelManager.GetCurrentLevel() == 3)
+				{
+					character.m_Win = true;
+					m_SoundManager.playReachGoal();
+					m_Playing = false;
+				}
 			}
 
 			// More collisions here once we have learned about particle effects.
@@ -108,7 +184,7 @@ bool Engine::detectCollisions(PlayableCharacter& character)
 	} // End x loop.
 
 
-	  // Return weather or not our Characters hae completed this level.
+	  // Return weather or not our Character has completed this level.
 	return reachedGoal;
 
 } // End detectCollisions()

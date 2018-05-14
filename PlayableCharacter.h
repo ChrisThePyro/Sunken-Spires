@@ -4,6 +4,7 @@
 class PlayableCharacter
 {
 protected:
+	// Floats, sprites and booleans.
 	sf::Sprite m_Sprite;
 	float m_JumpDuration;
 	bool m_IsJumping;
@@ -14,21 +15,35 @@ protected:
 	bool m_JustJumped = false;
 
 private:
+
+	// Gravity, speed and positions.
 	float m_Gravity;
 	float m_Speed = 400;
-	sf::Vector2f m_Position;
 
+	// Player bounding.
 	sf::FloatRect m_Feet;
 	sf::FloatRect m_Head;
 	sf::FloatRect m_Right;
 	sf::FloatRect m_Left;
 
+	// Player Texture.
 	sf::Texture m_Texture;
 
 public:
 
+	sf::Vector2f m_Position;
+
+	void setValues();
 	void spawn(sf::Vector2f startPosition, float gravity);
+	void respawn(sf::Vector2f startPosition, float gravity);
 	bool virtual handleInput() = 0;
+	std::vector<sf::Vector2i> m_ImmuneBlocks;
+	bool m_Win = false;
+
+	int m_Health;
+	int m_Lives;
+
+	PlayableCharacter();
 
 	sf::FloatRect getPosition();
 
@@ -43,6 +58,8 @@ public:
 	void stopRight(float position);
 	void stopLeft(float position);
 	void stopJump();
+	int getHealth();
+	int getLives();
 	sf::Vector2f getCentre();
 
 	void update(float elapsedTime);

@@ -20,6 +20,10 @@ void Engine::input()
 			if (Keyboard::isKeyPressed(Keyboard::Return))
 			{
 				m_Playing = true;
+				if (m_Playing == true)
+				{
+					m_SoundManager.PlayWaves();
+				}
 			}
 		}
 

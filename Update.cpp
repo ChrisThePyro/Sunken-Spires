@@ -1,12 +1,14 @@
 #include "stdafx.h"
 #include "Engine.h"
 #include <SFML/Graphics.hpp>
+#include "PlayableCharacter.h"
+#include "SoundManager.h"
 #include "sstream"
 
 using namespace sf;
 using namespace std;
 
-void Engine::update(float dtAsSeconds)
+void Engine::update(float dtAsSeconds, PlayableCharacter& character)
 {
 
 	if (m_NewLevel)
@@ -17,7 +19,7 @@ void Engine::update(float dtAsSeconds)
 	if (m_Playing)
 	{
 
-		// Update Thomas and Bob
+		// Update's player.
 		m_Character.update(dtAsSeconds);
 
 		if (detectCollisions(m_Character))
@@ -32,11 +34,16 @@ void Engine::update(float dtAsSeconds)
 		// Have Thomas and Bob run out of time?
 		if (m_TimeRemaining <= 0)
 		{
-			m_NewLevel = true;
+			character.m_Lives = 0;
 		}
 
 		m_MainView.setCenter(m_Character.getCentre());
 
+		if (character.m_Health == 0)
+		{
+			character.respawn(m_LevelManager.getStartPosition(), GRAVITY);
+			character.m_Lives -= 1;
+		}
 	}// End of if playing.
 
 	m_FramesSinceLastHUDUpdate++;
@@ -48,6 +55,8 @@ void Engine::update(float dtAsSeconds)
 		// Update the HUD text
 		stringstream ssTime;
 		stringstream ssLevel;
+		stringstream ssHealth;
+		stringstream ssLives;
 
 		// Update the time text
 		ssTime << (int)m_TimeRemaining;
@@ -57,9 +66,20 @@ void Engine::update(float dtAsSeconds)
 		ssLevel << "Level: " << m_LevelManager.GetCurrentLevel();
 		m_Hud.setLevel(ssLevel.str());
 
+		ssHealth << "Health: " << m_Character.getHealth();
+		m_Hud.setHealth(ssHealth.str());
+
+		ssLives << "Lives: " << m_Character.getLives();
+		m_Hud.setLives(ssLives.str());
+
 		// zero our frames since last update, since we just updated
 		m_FramesSinceLastHUDUpdate = 0;
 
 	} // end if (time to update hud)
+
+	if (character.m_Lives == 0)
+	{
+		m_Playing = false;
+	}
 
 }

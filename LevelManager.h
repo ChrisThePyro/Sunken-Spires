@@ -5,6 +5,7 @@ class LevelManager
 {
 
 private:
+	// Sets up level starts and timers.
 	sf::Vector2i m_LevelSize;
 	sf::Vector2f m_StartPosition;
 	float m_TimeModifier = 1;
@@ -13,6 +14,7 @@ private:
 	const int NUM_LEVEL = 3;
 
 public:
+	// Sets up tiles, functions & intagers.
 	const int TILE_SIZE = 50;
 	const int VERTS_IN_QUAD = 4;
 

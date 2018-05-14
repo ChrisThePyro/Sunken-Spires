@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "Character.h"
 #include "TextureHolder.h"
+#include "Engine.h"
+#include "SoundManager.h"
+#include <iostream>
 
 using namespace sf;
 
@@ -43,6 +46,7 @@ bool Character::handleInput()
 	if (Keyboard::isKeyPressed(Keyboard::A))
 	{
 		m_LeftPressed = true;
+		m_SoundManager->playWalking();
 	}
 	else
 	{
@@ -53,13 +57,24 @@ bool Character::handleInput()
 	if (Keyboard::isKeyPressed(Keyboard::D))
 	{
 		m_RightPressed = true;
+		m_SoundManager->playWalking();
 	}
 	else
 	{
 		m_RightPressed = false;
 	}
 
+	if (m_LeftPressed == false && m_RightPressed == false)
+	{
+		m_SoundManager->stopWalking();
+	}
+
 	// Return weather we just jumped or not.
 	return m_JustJumped;
 
 } // End functhion handleInput().
+
+void Character::SetSoundManager(SoundManager* _SoundManager)
+{
+	m_SoundManager = _SoundManager;
+}

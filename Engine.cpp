@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Engine.h"
+#include "PlayableCharacter.h"
 
 using namespace sf;
 
@@ -18,6 +19,8 @@ Engine::Engine()
 	m_BackgroundTexture = TextureHolder::GetTexture("graphics/background.png");
 	m_BackgroundSprite.setTexture(m_BackgroundTexture);
 	m_TextureTiles = TextureHolder::GetTexture("graphics/tiles_sheet.png");
+
+	m_Character.SetSoundManager(&m_SoundManager);
 }
 
 void Engine::run()
@@ -31,7 +34,7 @@ void Engine::run()
 		float dtAsSeconds = dt.asSeconds();
 
 		input();
-		update(dtAsSeconds);
-		draw();
+		update(dtAsSeconds, m_Character);
+		draw(m_Character);
 	}
 }

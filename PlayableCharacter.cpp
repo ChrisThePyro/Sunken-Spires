@@ -3,6 +3,16 @@
 
 using namespace sf;
 
+PlayableCharacter::PlayableCharacter()
+{
+	m_Lives = 5;
+}
+
+void PlayableCharacter::setValues()
+{
+	m_Health = 100;
+}
+
 void PlayableCharacter::spawn(Vector2f startPosition, float gravity)
 {
 	m_Position.x = startPosition.x;
@@ -10,11 +20,25 @@ void PlayableCharacter::spawn(Vector2f startPosition, float gravity)
 
 	m_Gravity = gravity;
 	m_Sprite.setPosition(m_Position);
+	m_Win = false;
+
+}
+
+void PlayableCharacter::respawn(Vector2f startPosition, float gravity)
+{
+	m_Position.x = startPosition.x;
+	m_Position.y = startPosition.y;
+
+	m_Gravity = gravity;
+	m_Sprite.setPosition(m_Position);
+
+	m_Health = 100;
 
 }
 
 void PlayableCharacter::update(float elapsedTime)
 {
+
 	if (m_RightPressed)
 	{
 		m_Position.x += m_Speed * elapsedTime;
@@ -132,4 +156,14 @@ void PlayableCharacter::stopJump()
 {
 	m_IsJumping = false;
 	m_IsFalling = true;
+}
+
+int PlayableCharacter::getHealth()
+{
+	return m_Health;
+}
+
+int PlayableCharacter::getLives()
+{
+	return m_Lives;
 }

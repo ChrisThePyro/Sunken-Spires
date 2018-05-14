@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Engine.h"
+#include "SoundManager.h"
 
 using namespace sf;
 
@@ -22,8 +23,9 @@ void Engine::loadLevel()
 	// How long is the new time limit?
 	m_TimeRemaining = m_LevelManager.getTimeLimit();
 
-	// Spawn Thomas and Bob.
+	// Spawn Player
 	m_Character.spawn(m_LevelManager.getStartPosition(), GRAVITY);
+	m_Character.setValues();
 
 	// Make sure this isn't run twice.
 	m_NewLevel = false;

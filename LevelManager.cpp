@@ -5,6 +5,7 @@
 #include "TextureHolder.h"
 #include <sstream>
 #include <fstream>
+#include "SoundManager.h"
 
 using namespace sf;
 using namespace std;
@@ -41,9 +42,9 @@ int** LevelManager::NextLevel(VertexArray& rVaLevel)
 
 	case 3:
 		LevelToLoad = "levels/level3.txt";
-		m_StartPosition.x = 1250;
-		m_StartPosition.y = 0;
-		m_BaseTimeLimit = 30.0f;
+		m_StartPosition.x = 100;
+		m_StartPosition.y = 380;
+		m_BaseTimeLimit = 100.0f;
 		break;
 	}
 
