@@ -29,6 +29,7 @@ void Engine::input()
 
 	}
 
+	// Plays a jump sound when the player jumps.
 	if (m_Character.handleInput())
 	{
 		m_SoundManager.playJump();
