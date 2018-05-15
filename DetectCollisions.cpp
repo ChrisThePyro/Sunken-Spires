@@ -176,6 +176,7 @@ bool Engine::detectCollisions(PlayableCharacter& character)
 					m_SoundManager.playReachGoal();
 					m_Playing = false;
 				}
+
 			}
 
 			// More collisions here once we have learned about particle effects.

@@ -42,11 +42,13 @@ void SoundManager::playReachGoal()
 	m_ReachGoalSound.play();
 }
 
+
 void SoundManager::playWalking()
 {
 	m_WalkingSound.setRelativeToListener(true);
 	if (m_WalkingSound.getStatus() != sf::SoundSource::Playing)
 	{
+		m_WalkingSound.setVolume(10);
 		m_WalkingSound.play();
 	}
 }
@@ -58,6 +60,8 @@ void SoundManager::stopWalking()
 
 void SoundManager::PlayWaves()
 {
+	m_WavesSound.setVolume(25);
+	m_WavesSound.setLoop(true);
 	m_WavesSound.play();
 }
 

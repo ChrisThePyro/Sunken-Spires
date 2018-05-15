@@ -8,7 +8,7 @@ void Engine::draw(PlayableCharacter& character)
 	// Erase the last frame.
 	m_RenderWindow.clear(sf::Color::Blue);
 
-	if (character.m_Lives != 0 && character.m_Win == false)
+	if (m_Playing && character.m_Lives != 0 && character.m_Win == false)
 	{
 		// Switch to the background view
 		m_RenderWindow.setView(m_MainView);
@@ -38,12 +38,12 @@ void Engine::draw(PlayableCharacter& character)
 		m_RenderWindow.draw(m_Hud.getMessage());
 	}
 
-	if (character.m_Lives == 0)
+	if (character.m_Lives == 0 && character.m_Win != true)
 	{
 		m_RenderWindow.draw(m_Hud.getGameoverMessage());
 	}
 
-	if (character.m_Win == true)
+	if (character.m_Win == true && character.m_Lives != 0)
 	{
 		m_RenderWindow.draw(m_Hud.getWinMessage());
 	}
